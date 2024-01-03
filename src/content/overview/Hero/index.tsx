@@ -106,7 +106,7 @@ function Hero() {
           >
             Browse Live Preview
           </Button>
-          {/* <Button
+          <Button
             sx={{ ml: 2 }}
             component="a"
             target="_blank"
@@ -116,7 +116,7 @@ function Hero() {
             variant="text"
           >
             Key Features
-          </Button> */}
+          </Button>
           <Grid container spacing={3} mt={5}>
             <Grid item md={6}>
               <MuiAvatar>
