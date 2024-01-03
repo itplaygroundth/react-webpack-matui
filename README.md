@@ -38,7 +38,7 @@ A minimal secure boilerplate for writing Web Applications using [React](https://
 Clone the repository :
 
 ```bash
-git clone https://github.com/codesbiome/react-webpack-typescript-2022
+git clone https://github.com/itplaygroundth/react-webpack-matui.git
 ```
 
 <br>
