@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material';
 import { themeCreator } from './base';
 import { StylesProvider } from '@mui/styles';
+import { useThemeStore } from '@src/store';
 
 export const ThemeContext = React.createContext(
   (themeName: string): void => {}
@@ -9,8 +10,11 @@ export const ThemeContext = React.createContext(
 type ThemeProviderWrapperProps = {
   children: React.ReactNode;
 };
+
 const ThemeProviderWrapper: React.FC<ThemeProviderWrapperProps> = (props) => {
-  const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
+ // const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
+  const curThemeName = useThemeStore((state:any)=>state.theme) || 'PureLightTheme';
+ 
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
   const setThemeName = (themeName: string): void => {

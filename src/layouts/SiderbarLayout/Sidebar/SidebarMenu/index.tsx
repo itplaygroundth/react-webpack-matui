@@ -181,7 +181,7 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
-        <List component="div">
+        {/* <List component="div">
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
@@ -197,12 +197,12 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List> */}
         <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Dashboards
+              Admin
             </ListSubheader>
           }
         >
@@ -216,7 +216,7 @@ function SidebarMenu() {
                   to="/dashboards/admin"
                   startIcon={<BrightnessLowTwoToneIcon />}
                 >
-                  Admin
+                  DASHBOARDS
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -224,16 +224,16 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/dashboards/partners"
                   startIcon={<MmsTwoToneIcon />}
                 >
-                  Messenger
+                  Partners
                 </Button>
               </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
-        <List
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -292,7 +292,7 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        {/* <List
+        <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -460,7 +460,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List> */}
+        </List>  */}
       </MenuWrapper>
     </>
   );

@@ -9,6 +9,7 @@ import SuspenseLoader from './components/SuspenseLoader';
 import { PropTypes } from '@mui/material';
 import React from 'react';
 
+
  
 
 const Loader = (Component:ComponentType) => (props:any) =>
@@ -23,6 +24,8 @@ const Loader = (Component:ComponentType) => (props:any) =>
 
 const Crypto = Loader(lazy(() => import('@src/content/dashboards/Crypto')));
 const Admin = Loader(lazy(() => import('@src/content/dashboards/Admin')));
+
+const Partners = Loader(lazy(() => import('@src/content/dashboards/Partners')));
   const Status404 = Loader(
     lazy(() => import('@src/content/pages/Status/Status404'))
   );
@@ -86,10 +89,10 @@ const Admin = Loader(lazy(() => import('@src/content/dashboards/Admin')));
           path: 'admin',
           element: <Admin />
         },
-        // {
-        //   path: 'messenger',
-        //   element: <Messenger />
-        // }
+        {
+          path: 'partners',
+          element: <Partners />
+        }
       ]
     },
 

@@ -3,11 +3,12 @@ import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import matuiImage from '@assets/images/logo/material-ui.svg';
 import typescriptImage from '@assets/images/logo/typescript.svg';
-
+import '@src/components/Application';
+import { icons } from '@src/components/Icons';
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(50)};
@@ -75,6 +76,40 @@ const TsAvatar = styled(Box)(
 );
 
 function Hero() {
+  const [darkTheme, setDarkTheme] = useState(true);
+
+  /**
+   * On component mount
+   */
+  useEffect(() => {
+    const useDarkTheme = parseInt(localStorage.getItem('dark-mode'));
+    if (isNaN(useDarkTheme)) {
+      setDarkTheme(true);
+    } else if (useDarkTheme == 1) {
+      setDarkTheme(true);
+    } else if (useDarkTheme == 0) {
+      setDarkTheme(false);
+    }
+  }, []);
+
+  /**
+   * On Dark theme change
+   */
+  useEffect(() => {
+    if (darkTheme) {
+      localStorage.setItem('dark-mode', '1');
+      document.body.classList.add('dark-mode');
+    } else {
+      localStorage.setItem('dark-mode', '0');
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkTheme]);
+
+  function toggleTheme() {
+    setDarkTheme(!darkTheme);
+  }
+
+
   return (
     <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
       <Grid
@@ -153,6 +188,13 @@ function Hero() {
                 </Typography>
               </Typography>
             </Grid>
+          </Grid>
+          <Grid  container spacing={3} mt={5}>
+            <Grid item md={6}>
+          <button onClick={toggleTheme}>
+            {darkTheme ? 'Light Theme' : 'Dark Theme'}
+          </button>
+          </Grid>
           </Grid>
         </Grid>
       </Grid>

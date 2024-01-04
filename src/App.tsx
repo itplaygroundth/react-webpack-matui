@@ -7,10 +7,14 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { CssBaseline } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
 import React from 'react';
+import { useCounterStore } from '@src/store'
+
+ 
 
 function App() {
   const content = useRoutes(router);
-
+  const increment = useCounterStore((state) => state.increment)
+  const decrement = useCounterStore((state) => state.decrement)
   return (
     <ThemeProvider>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
