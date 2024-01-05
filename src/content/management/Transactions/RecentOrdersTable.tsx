@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 
 import Label from '@src/components/Label';
-import { Partners, CryptoOrderStatus, PartnersStatus } from '@src/models/crypto_order';
+import { Transactions, TransactionsStatus } from '@src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
@@ -34,22 +34,32 @@ import React from 'react';
 
 interface RecentOrdersTableProps {
   className?: string;
-  //cryptoOrders: Partners[];
-  partners: Partners[];
+  //cryptoOrders: Transactions[];
+  transaction: Transactions[];
 }
 
 interface Filters {
-  status?: PartnersStatus;
+  status?: TransactionsStatus;
 }
 
-const getStatusLabel = (partnerStatus: PartnersStatus): JSX.Element => {
+const formatNumber = (numberString:string)=> {
+  
+  if (numberString.length !== 10) {
+    return "Invalid input. Please provide a 10-digit number.";
+  }
+
+  return `${'xxx'}-${'x'}-${numberString.slice(4, 8)}-${'xx'}`;
+
+}
+
+const getStatusLabel = (transactiontatus: TransactionsStatus): JSX.Element => {
   const map = {
-    failed: {
-      text: 'Failed',
+    void: {
+      text: 'Void',
       color: 'error'
     },
-    active: {
-      text: 'Active',
+    verified: {
+      text: 'Verified',
       color: 'success'
     },
     pending: {
@@ -58,19 +68,19 @@ const getStatusLabel = (partnerStatus: PartnersStatus): JSX.Element => {
     }
   };
 
-  const { text, color }: any = map[partnerStatus];
+  const { text, color }: any = map[transactiontatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
 const applyFilters = (
-  partners: Partners[],
+  transaction: Transactions[],
   filters: Filters
-): Partners[] => {
-  return partners.filter((partners) => {
+): Transactions[] => {
+  return transaction.filter((transaction) => {
     let matches = true;
 
-    if (filters.status && partners.status !== filters.status) {
+    if (filters.status && transaction.status !== filters.status) {
       matches = false;
     }
 
@@ -79,21 +89,22 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  partners: Partners[],
+  transaction: Transactions[],
   page: number,
   limit: number
-): Partners[] => {
-  return partners.slice(page * limit, page * limit + limit);
+): Transactions[] => {
+  return transaction.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
-  console.log(partners)
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ transaction }) => {
+
+  console.log(transaction)
+  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<number[]>(
     []
   );
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(100);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
@@ -104,12 +115,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
       name: 'All'
     },
     {
-      id: 'active',
-      name: 'Active'
+      id: 'verified',
+      name: 'Verified'
     },
     {
-      id: 'pending',
-      name: 'Pending'
+      id: 'void',
+      name: 'Void'
     }
   ];
 
@@ -131,14 +142,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
   ): void => {
     setSelectedCryptoOrders(
       event.target.checked
-        ? partners.map((partners:Partners) => partners.id)
+        ? transaction.map((transaction:Transactions) => transaction.id)
         : []
     );
   };
 
   const handleSelectOneCryptoOrder = (
     event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
+    cryptoOrderId: number
   ): void => {
     if (!selectedCryptoOrders.includes(cryptoOrderId)) {
       setSelectedCryptoOrders((prevSelected) => [
@@ -160,7 +171,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(partners, filters);
+  const filteredCryptoOrders = applyFilters(transaction, filters);
   const paginatedCryptoOrders = applyPagination(
     filteredCryptoOrders,
     page,
@@ -168,9 +179,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
   );
   const selectedSomeCryptoOrders =
     selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < partners.length;
+    selectedCryptoOrders.length < transaction.length;
   const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === partners.length;
+    selectedCryptoOrders.length === transaction.length;
   const theme = useTheme();
 
   return (
@@ -201,7 +212,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
               </FormControl>
             </Box>
           }
-          title="Recent Orders"
+          title="Recent Transactions"
         />
       )}
       <Divider />
@@ -218,24 +229,28 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                 />
               </TableCell>
               
-              <TableCell>Partners ID</TableCell>
-              <TableCell>Partners affiliate</TableCell>
-              <TableCell>Partners name</TableCell>
+              <TableCell>#</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Accout Number</TableCell>
+              <TableCell>Accout Name</TableCell>
+              <TableCell align="left">BankName</TableCell>
+              <TableCell align="right">Before</TableCell>
+              <TableCell align="right">Amount</TableCell>
               <TableCell align="right">Balance</TableCell>
-              <TableCell align="right">Turnover</TableCell>
               <TableCell align="right">Status</TableCell>
               <TableCell align="left">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((partners) => {
+            {paginatedCryptoOrders.map((transaction) => {
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                partners.id
+                transaction.id
               );
               return (
                 <TableRow
                   hover
-                  key={partners.id}
+                  key={transaction.id}
                   selected={isCryptoOrderSelected}
                 >
                   <TableCell padding="checkbox">
@@ -243,7 +258,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       color="primary"
                       checked={isCryptoOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, partners.id)
+                        handleSelectOneCryptoOrder(event, transaction.id)
                       }
                       value={isCryptoOrderSelected}
                     />
@@ -256,8 +271,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.orderDetails} */}
-                      {partners.id}
+                      {transaction.id}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
@@ -272,8 +286,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.orderID} */}
-                      {partners.affiliate_key}
+                      {/* {transaction.transaction_date} */}
+                      { format(new Date(transaction.transaction_date), 'dd-MM-yyyy HH:mm:ss')}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="text.secondary"    fontWeight="bold" noWrap>
+                      {/* {format(transaction.creationdate, 'MMMM dd yyyy')} */}
+                      {transaction.uid.indexOf('D')!=-1?'โอนเงิน':'รับโอนเงิน'}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -284,8 +304,29 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.orderID} */}
-                      {partners.username}
+                      { formatNumber(transaction.User.banknumber)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {transaction.User.fullname}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {transaction.bankname}
                     </Typography>
                   </TableCell>
                  
@@ -301,7 +342,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                     
                     </Typography> */}
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {numeral(partners.balance).format(
+                      {numeral(transaction.beforebalance).format(
                         `${"฿"}0,0.00`
                       )}
                     </Typography>
@@ -320,18 +361,35 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       {cryptoOrder.amountCrypto}
                       {cryptoOrder.cryptoCurrency}
                     </Typography> */}
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {numeral(partners.turnover).format(
+                    <Typography variant="body2" color="text.secondary"    fontWeight="bold" noWrap>
+                      {numeral(transaction.transactionamount).format(
                         `${"฿"}0,0.00`
                       )}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    {getStatusLabel(partners.status=='1'?'active':'pending')}
+                    {/* <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.cryptoCurrency}
+                    </Typography> */}
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {numeral(transaction.balance).format(
+                        `${"฿"}0,0.00`
+                      )}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    {getStatusLabel(transaction.status=='void'?'void':'verified')}
                   
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Edit Partner" arrow>
+                    <Tooltip title="Edit Member" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -345,7 +403,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete Partner" arrow>
+                    {/* <Tooltip title="Delete Partner" arrow>
                       <IconButton
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
@@ -356,7 +414,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </TableCell>
                 </TableRow>
               );
@@ -372,7 +430,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
           onRowsPerPageChange={handleLimitChange}
           page={page}
           rowsPerPage={limit}
-          rowsPerPageOptions={[5, 10, 25, 30]}
+          rowsPerPageOptions={[5, 10, 25, 30, 50, 100]}
         />
       </Box>
     </Card>
@@ -380,11 +438,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
 };
 
 RecentOrdersTable.propTypes = {
-  partners: PropTypes.array.isRequired
+  transaction: PropTypes.array.isRequired
 };
 
 RecentOrdersTable.defaultProps = {
-  partners: []
+  transaction: []
 };
 
 export default RecentOrdersTable;

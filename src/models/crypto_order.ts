@@ -1,5 +1,15 @@
 export type CryptoOrderStatus = 'completed' | 'pending' | 'failed';
 export type PartnersStatus = 'active' | 'pending' ;
+export type MembersStatus = 'active' | 'pending' ;
+export type TransactionsStatus = 'void' | 'verified' | 'pending' ;
+
+export interface User {
+  bankname:string;
+  banknumber:string;
+  username:string;
+  fullname:string;
+}
+
 export interface CryptoOrder {
   id: string;
   status: CryptoOrderStatus;
@@ -19,6 +29,52 @@ export interface Partners {
   username: string;
   balance: number;
   affiliate_key: string;
+  turnover: number;
+  status:string;
+}
+
+export interface Members {
+  id: string;
+  username: string;
+  balance: number;
+  partners_key: string;
+  turnover: number;
+  status:string;
+}
+
+export interface Commission {
+  id: string;
+  username: string;
+  balance: number;
+  partners_key: string;
+  turnover: number;
+  status:string;
+}
+
+export interface Transactions {
+  
+  
+  id: number;
+  uid:string;
+  accountno:string;
+  bankname:string;
+  userid:number;
+  bankcode:number;
+  transactionamount: number;
+  beforebalance: number;
+  balance: number;
+  unix:number;
+  transaction_date:string;
+  creationDate:string;
+  status:string;
+  User:User;
+}
+
+export interface Turnover {
+  id: string;
+  username: string;
+  balance: number;
+  partners_key: string;
   turnover: number;
   status:string;
 }

@@ -227,7 +227,65 @@ function SidebarMenu() {
                   to="/dashboards/partners"
                   startIcon={<MmsTwoToneIcon />}
                 >
-                  Partners
+                  PARTNERS
+                </Button>
+              </ListItem>
+              
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/dashboards/members"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  MEMBERS
+                </Button>
+              </ListItem>
+              </List>
+              </SubMenuWrapper>
+              </List>
+              <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Management
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/transactions"
+                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                >
+                  TRANSACTIONS
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/turnover"
+                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                >
+                  TURN OVER
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/commission"
+                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                >
+                  COMMISSION
                 </Button>
               </ListItem>
             </List>
@@ -403,7 +461,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List>*/}
         <List
           component="div"
           subheader={
@@ -460,7 +518,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>  */}
+        </List>  
       </MenuWrapper>
     </>
   );

@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 
 import Label from '@src/components/Label';
-import { Partners, CryptoOrderStatus, PartnersStatus } from '@src/models/crypto_order';
+import { Commission, MembersStatus, TransactionsStatus } from '@src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
@@ -34,15 +34,15 @@ import React from 'react';
 
 interface RecentOrdersTableProps {
   className?: string;
-  //cryptoOrders: Partners[];
-  partners: Partners[];
+  //cryptoOrders: Commission[];
+  members: Commission[];
 }
 
 interface Filters {
-  status?: PartnersStatus;
+  status?: MembersStatus;
 }
 
-const getStatusLabel = (partnerStatus: PartnersStatus): JSX.Element => {
+const getStatusLabel = (memberStatus: MembersStatus): JSX.Element => {
   const map = {
     failed: {
       text: 'Failed',
@@ -58,19 +58,19 @@ const getStatusLabel = (partnerStatus: PartnersStatus): JSX.Element => {
     }
   };
 
-  const { text, color }: any = map[partnerStatus];
+  const { text, color }: any = map[memberStatus];
 
   return <Label color={color}>{text}</Label>;
 };
 
 const applyFilters = (
-  partners: Partners[],
+  members: Commission[],
   filters: Filters
-): Partners[] => {
-  return partners.filter((partners) => {
+): Commission[] => {
+  return members.filter((members) => {
     let matches = true;
 
-    if (filters.status && partners.status !== filters.status) {
+    if (filters.status && members.status !== filters.status) {
       matches = false;
     }
 
@@ -79,15 +79,15 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  partners: Partners[],
+  members: Commission[],
   page: number,
   limit: number
-): Partners[] => {
-  return partners.slice(page * limit, page * limit + limit);
+): Commission[] => {
+  return members.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
-  console.log(partners)
+const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ members }) => {
+
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -131,7 +131,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
   ): void => {
     setSelectedCryptoOrders(
       event.target.checked
-        ? partners.map((partners:Partners) => partners.id)
+        ? members.map((members:Commission) => members.id)
         : []
     );
   };
@@ -160,7 +160,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(partners, filters);
+  const filteredCryptoOrders = applyFilters(members, filters);
   const paginatedCryptoOrders = applyPagination(
     filteredCryptoOrders,
     page,
@@ -168,9 +168,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
   );
   const selectedSomeCryptoOrders =
     selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < partners.length;
+    selectedCryptoOrders.length < members.length;
   const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === partners.length;
+    selectedCryptoOrders.length === members.length;
   const theme = useTheme();
 
   return (
@@ -201,7 +201,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
               </FormControl>
             </Box>
           }
-          title="Recent Orders"
+          title="Recent Commission"
         />
       )}
       <Divider />
@@ -218,9 +218,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                 />
               </TableCell>
               
-              <TableCell>Partners ID</TableCell>
-              <TableCell>Partners affiliate</TableCell>
-              <TableCell>Partners name</TableCell>
+              <TableCell>Commission ID</TableCell>
+              <TableCell>Commission affiliate</TableCell>
+              <TableCell>Commission name</TableCell>
               <TableCell align="right">Balance</TableCell>
               <TableCell align="right">Turnover</TableCell>
               <TableCell align="right">Status</TableCell>
@@ -228,14 +228,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((partners) => {
+            {paginatedCryptoOrders.map((members) => {
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                partners.id
+                members.id
               );
               return (
                 <TableRow
                   hover
-                  key={partners.id}
+                  key={members.id}
                   selected={isCryptoOrderSelected}
                 >
                   <TableCell padding="checkbox">
@@ -243,7 +243,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       color="primary"
                       checked={isCryptoOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, partners.id)
+                        handleSelectOneCryptoOrder(event, members.id)
                       }
                       value={isCryptoOrderSelected}
                     />
@@ -256,8 +256,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.orderDetails} */}
-                      {partners.id}
+                      {members.id}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
@@ -272,8 +271,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       gutterBottom
                       noWrap
                     >
-                      {/* {cryptoOrder.orderID} */}
-                      {partners.affiliate_key}
+                      {members.partners_key || "office"}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -285,7 +283,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       noWrap
                     >
                       {/* {cryptoOrder.orderID} */}
-                      {partners.username}
+                      {members.username}
                     </Typography>
                   </TableCell>
                  
@@ -301,7 +299,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                     
                     </Typography> */}
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {numeral(partners.balance).format(
+                      {numeral(members.balance).format(
                         `${"฿"}0,0.00`
                       )}
                     </Typography>
@@ -321,17 +319,17 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
                       {cryptoOrder.cryptoCurrency}
                     </Typography> */}
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {numeral(partners.turnover).format(
+                      {numeral(members.turnover).format(
                         `${"฿"}0,0.00`
                       )}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    {getStatusLabel(partners.status=='1'?'active':'pending')}
+                    {getStatusLabel(members.status=='1'?'active':'pending')}
                   
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="Edit Partner" arrow>
+                    <Tooltip title="Edit Member" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
@@ -380,11 +378,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
 };
 
 RecentOrdersTable.propTypes = {
-  partners: PropTypes.array.isRequired
+  members: PropTypes.array.isRequired
 };
 
 RecentOrdersTable.defaultProps = {
-  partners: []
+  members: []
 };
 
 export default RecentOrdersTable;
