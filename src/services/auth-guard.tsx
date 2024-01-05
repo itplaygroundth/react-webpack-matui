@@ -4,13 +4,14 @@ import { useAuth } from '../contexts/AuthContext';
 
 const AuthGuard: React.FC<{ roles:string[],children:ReactNode }> = ({ roles,children }) => {
     const context = useAuth()
+    const location = useLocation();
     const navigate = useNavigate()
     
     console.log(context.state)
 
     if(!context.state.isAuthenticated){
          
-        return <Navigate to="/auth/signin" replace />;
+        return <Navigate to="/signin" replace state={{ from: location }} />;
     }
     // if(roles && roles.indexOf(context.state.role) === -1){
     //     return <Navigate to="/dashboards" />;

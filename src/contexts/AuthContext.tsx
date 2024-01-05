@@ -7,11 +7,12 @@ interface AuthState {
   isAuthenticated: boolean;
   accessToken: string | null;
   role:string
+  redirect:string
 }
 
 interface AuthAction {
   type: 'LOGIN' | 'LOGOUT';
-  payload?: { accessToken: string,role:string };
+  payload?: { accessToken: string,role:string,redirect:string };
 }
 
 interface AuthContextProps {
@@ -24,7 +25,8 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 const initialState: AuthState = {
   isAuthenticated: false,
   accessToken: null,
-  role:"user"
+  role:"user",
+  redirect:""
 };
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
@@ -33,7 +35,8 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return {
         isAuthenticated: true,
         accessToken: action.payload?.accessToken || null,
-        role:action.payload?.role || ""
+        role:action.payload?.role || "",
+        redirect:action.payload?.redirect || ""
       };
     case 'LOGOUT':
       return initialState;

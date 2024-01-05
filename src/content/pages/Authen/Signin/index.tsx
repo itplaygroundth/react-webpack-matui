@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useAuth } from '@src/contexts/AuthContext';
 
 
@@ -51,6 +51,7 @@ export default function SignIn() {
   // };
   const context = useAuth()
   const navigate = useNavigate()
+  const location = useLocation();
   const [username, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -86,7 +87,11 @@ export default function SignIn() {
         //  history.replace('/'); 
         data.role = "admin"
         context.dispatch({ type: "LOGIN", payload: data })
-        navigate("/")
+        //@ts-ignore
+        const origin = location.state?.from?.pathname ;
+        //console.log(location.state)
+        navigate(origin);
+        //navigate("/")
       //history.push('/dashboard'); // Redirect to the dashboard after login
         })
      

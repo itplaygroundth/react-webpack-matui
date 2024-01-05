@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
 import Application from '@src/components/Application';
 import { AuthProvider } from './contexts/AuthContext';
 import SignIn from './content/pages/Authen/Signin';
-import AuthGuard from './services/auth-guard';
+
 import { createRoot } from 'react-dom/client';
 import DashboardAdmin from './content/dashboards/Admin';
 const container = document.getElementById('app');
@@ -22,12 +22,13 @@ root.render(
     <SidebarProvider>
       <AuthProvider>
       <BrowserRouter>
-        <Routes>
+      {/* <Routes>
           <Route path="/auth/signin" element={<SignIn />} />
-          {/* <Route path="/dasboards" element={<AuthGuard roles={["admin"]}><DashboardAdmin /></AuthGuard>} /> */}
+         
           <Route path='/' element={<AuthGuard roles={["admin"]}><App /></AuthGuard>} />
           
-        </Routes>
+        </Routes> */}
+       <App />
       </BrowserRouter>
       </AuthProvider>
     </SidebarProvider>

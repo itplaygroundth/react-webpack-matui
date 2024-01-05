@@ -213,7 +213,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/admin"
+                  to="/dashboards"
                   startIcon={<BrightnessLowTwoToneIcon />}
                 >
                   DASHBOARDS

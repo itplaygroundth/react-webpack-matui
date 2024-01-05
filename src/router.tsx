@@ -9,7 +9,7 @@ import SuspenseLoader from './components/SuspenseLoader';
 import { PropTypes } from '@mui/material';
 import React from 'react';
 
-
+import AuthGuard from './services/auth-guard';
 
  
 
@@ -36,95 +36,99 @@ const Status404 = Loader(
   );
 
   const routes: RouteObject[]=[
-    // {
-    //   path: '',
-    //   element: <BaseLayout />,
-    //   children: [
-    //     {
-    //       path: '/',
-    //       element: <Overview />
-    //     },
-    //     {
-    //       path: 'overview',
-    //       element: <Navigate to="/" replace />
-    //     },
-    //     {
-    //       path: 'status',
-    //       children: [
-    //         {
-    //           path: '',
-    //           element: <Navigate to="404" replace />
-    //         },
-    //         {
-    //           path: '404',
-    //           element: <Status404 />
-    //         },
-    //         // {
-    //         //   path: '500',
-    //         //   element: <Status500 />
-    //         // },
-    //         // {
-    //         //   path: 'maintenance',
-    //         //   element: <StatusMaintenance />
-    //         // },
-    //         // {
-    //         //   path: 'coming-soon',
-    //         //   element: <StatusComingSoon />
-    //         // }
-    //       ]
-    //     },
-       
-    //     {
-    //       path: '*',
-    //       element: <Status404 />
-    //     }
-    //   ]
-    // },
     {
-      path: 'authen',
+      path: '',
+      element: <BaseLayout />,
       children: [
         {
-          path: '',
-          element: <Navigate to="signin" replace />
+          path: '/',
+          element: <Overview />
+        },
+        {
+          path: 'overview',
+          element: <Navigate to="/" replace />
         },
         {
           path: 'signin',
           element: <Signin />
         },
-        // {
-        //   path: 'register',
-        //   element: <Register />
-        // },
-        // {
-        //   path: 'forgot-password',
-        //   element: <ForgotPassword />
-        // },
-        // {
-        //   path: 'reset-password',
-        //   element: <ResetPassword />
-        // }
+        {
+          path: 'status',
+          children: [
+            {
+              path: '',
+              element: <Navigate to="404" replace />
+            },
+            {
+              path: '404',
+              element: <Status404 />
+            },
+            // {
+            //   path: '500',
+            //   element: <Status500 />
+            // },
+            // {
+            //   path: 'maintenance',
+            //   element: <StatusMaintenance />
+            // },
+            // {
+            //   path: 'coming-soon',
+            //   element: <StatusComingSoon />
+            // }
+          ]
+        },
+        {
+          path: 'authen',
+          children: [
+            {
+              path: '',
+              element: <Navigate to="signin" replace />
+            },
+            {
+              path: 'signin',
+              element: <Signin />
+            },
+            // {
+            //   path: 'register',
+            //   element: <Register />
+            // },
+            // {
+            //   path: 'forgot-password',
+            //   element: <ForgotPassword />
+            // },
+            // {
+            //   path: 'reset-password',
+            //   element: <ResetPassword />
+            // }
+          ]
+        },
+        {
+          path: '*',
+          element: <Status404 />
+        }
       ]
     },
+    
     {
-      path: '',
+      path: 'dashboards',
       element: <SidebarLayout />,
       children: [
         {
-          path: '/',
-          element: <Admin />
+          path: '',
+          element: ( <AuthGuard roles={["admin"]}> <Admin /> </AuthGuard> )
         },
-        {
-          path: 'dashboards',
-          element: <Navigate to="/" replace />
-        },
+        // {
+        //   path: '',
+        //   element: <Navigate to="/" replace />
+        // },
         {
           path: 'crypto',
           element: <Crypto />
         },
-        // {
-        //   path: 'admin',
-        //   element: <Admin />
-        // },
+        {
+          path: 'admin',
+          element: <Admin />
+        },
         {
           path: 'partners',
           element: <Partners />
