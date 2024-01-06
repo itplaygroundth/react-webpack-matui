@@ -9,7 +9,7 @@ const AuthGuard: React.FC<{ roles:string[],children:ReactNode }> = ({ roles,chil
     
     console.log(context.state)
 
-    if(!context.state.isAuthenticated){
+    if(!context.state.isAuthenticated && !localStorage.getItem('accessToken')){
          
         return <Navigate to="/signin" replace state={{ from: location }} />;
     }

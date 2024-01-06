@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import {
   Avatar,
@@ -24,6 +24,8 @@ import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import React from 'react';
 import avatarImage from '@assets/images/avatars/1.jpg'
+import { useAuth } from '@src/contexts/AuthContext';
+
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
@@ -76,6 +78,15 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+  const context = useAuth()
+  const navigate = useNavigate()
+  const handleLogout = (): void => {
+    context.dispatch({ type: "LOGOUT" })
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
+    navigate("/")
+  }
 
   return (
     <>
@@ -136,7 +147,7 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={handleLogout}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

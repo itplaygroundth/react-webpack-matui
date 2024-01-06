@@ -82,8 +82,12 @@ export default function SignIn() {
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('user',data.username);
         
-        
-        Swal.fire("Signin Success!").then((result) => {
+        Swal.fire({
+          title: 'Signed in!',
+          text: `Welcome ${data.username}`,
+          icon: 'success',
+          confirmButtonText: 'OK!',
+        }).then((result) => {
         //  history.replace('/'); 
         data.role = "admin"
         context.dispatch({ type: "LOGIN", payload: data })
