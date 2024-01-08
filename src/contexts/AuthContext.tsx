@@ -1,7 +1,8 @@
 // AuthContext.tsx
 import { createContext, useContext, useReducer, ReactNode } from 'react';
 import React from 'react';
-
+import { useUserStore } from '@src/store';
+//import { createStore, useStore } from 'zustand'
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -17,6 +18,7 @@ interface AuthAction {
 
 interface AuthContextProps {
   state: AuthState;
+  
   dispatch: React.Dispatch<AuthAction>;
 }
 

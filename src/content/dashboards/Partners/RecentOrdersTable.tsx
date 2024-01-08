@@ -87,7 +87,7 @@ const applyPagination = (
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ partners }) => {
-  console.log(partners)
+   
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );

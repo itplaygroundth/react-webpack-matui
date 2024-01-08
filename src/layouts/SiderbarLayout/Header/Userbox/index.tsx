@@ -24,7 +24,8 @@ import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import React from 'react';
 import avatarImage from '@assets/images/avatars/1.jpg'
-import { useAuth } from '@src/contexts/AuthContext';
+import { useUserStore } from '@src/store';
+//import { useAuth } from '@src/contexts/AuthContext';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -79,12 +80,14 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
-  const context = useAuth()
+  //const context = useAuth()
+  const setUser = useUserStore((state) => state.setUser)
   const navigate = useNavigate()
   const handleLogout = (): void => {
-    context.dispatch({ type: "LOGOUT" })
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
+    //context.dispatch({ type: "LOGOUT" })
+    //localStorage.removeItem('accessToken');
+    //localStorage.removeItem('user');
+    setUser({username:null,accessToken:null,role:null,isAuthenticated:false})
     navigate("/")
   }
 

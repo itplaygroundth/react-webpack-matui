@@ -1,15 +1,17 @@
 import React, { ReactNode } from 'react';
 import { Navigate, useLocation,useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+//import { useAuth } from '../contexts/AuthContext';
+import { useUserStore } from '@src/store';
 
 const AuthGuard: React.FC<{ roles:string[],children:ReactNode }> = ({ roles,children }) => {
-    const context = useAuth()
+    //const context = useAuth()
     const location = useLocation();
     const navigate = useNavigate()
-    
-    console.log(context.state)
+    const context = useUserStore((store:any) => store.user);
+   
+    //console.log(context)
 
-    if(!context.state.isAuthenticated && !localStorage.getItem('accessToken')){
+    if(!context.isAuthenticated && !context.accessToken){
          
         return <Navigate to="/signin" replace state={{ from: location }} />;
     }

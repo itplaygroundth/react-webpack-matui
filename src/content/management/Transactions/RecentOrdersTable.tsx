@@ -98,7 +98,7 @@ const applyPagination = (
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ transaction }) => {
 
-  console.log(transaction)
+  
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<number[]>(
     []
   );
@@ -287,13 +287,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ transaction }) => {
                       noWrap
                     >
                       {/* {transaction.transaction_date} */}
-                      { format(new Date(transaction.transaction_date), 'dd-MM-yyyy HH:mm:ss')}
+                      { transaction.transaction_date ?format(new Date(transaction.transaction_date), 'dd-MM-yyyy HH:mm:ss'):format(new Date(transaction.creationDate), 'dd-MM-yyyy HH:mm:ss')}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2" color="text.secondary"    fontWeight="bold" noWrap>
                       {/* {format(transaction.creationdate, 'MMMM dd yyyy')} */}
-                      {transaction.uid.indexOf('D')!=-1?'โอนเงิน':'รับโอนเงิน'}
+                      {transaction.uid.indexOf('DR')!=-1?"คำสั่งถอน":transaction.uid.indexOf('D')!=-1?'โอนเงิน':'รับโอนเงิน'}
                     </Typography>
                   </TableCell>
                   <TableCell>

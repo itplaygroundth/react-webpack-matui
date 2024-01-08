@@ -20,7 +20,7 @@ root.render(
  
   <HelmetProvider>
     <SidebarProvider>
-      <AuthProvider>
+      {/* <AuthProvider> */}
       <BrowserRouter>
       {/* <Routes>
           <Route path="/auth/signin" element={<SignIn />} />
@@ -30,7 +30,7 @@ root.render(
         </Routes> */}
        <App />
       </BrowserRouter>
-      </AuthProvider>
+      {/* </AuthProvider> */}
     </SidebarProvider>
   </HelmetProvider> 
 );

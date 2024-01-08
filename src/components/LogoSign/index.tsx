@@ -97,7 +97,7 @@ const TooltipWrapper = styled(({ className, ...props }: TooltipProps) => (
 
 function Logo() {
   const theme = useTheme();
-console.log(theme)
+ 
   return (
     <TooltipWrapper
       title="Tokyo Free White React Typescript Admin Dashboard"

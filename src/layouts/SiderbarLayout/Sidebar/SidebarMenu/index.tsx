@@ -263,7 +263,7 @@ function SidebarMenu() {
                   to="/management/transactions"
                   startIcon={<WorkspacePremiumTwoToneIcon />}
                 >
-                  TRANSACTIONS
+                 BANK TRANSACTIONS
                 </Button>
               </ListItem>
               <ListItem component="div">

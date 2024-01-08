@@ -10,6 +10,13 @@ export interface User {
   fullname:string;
 }
 
+export interface UserInfo {
+  username: string;
+  accessToken: string;
+  isAuthenticated: boolean;
+  role:string;
+}
+
 export interface CryptoOrder {
   id: string;
   status: CryptoOrderStatus;

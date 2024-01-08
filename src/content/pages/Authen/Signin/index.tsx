@@ -14,16 +14,16 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Swal from 'sweetalert2'
 import { useLocation, useNavigate } from 'react-router';
-import { useAuth } from '@src/contexts/AuthContext';
-
+//import { useAuth } from '@src/contexts/AuthContext';
+import { useUserStore } from '@src/store';
 
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://tsxlab.me/">
+        TSX LAB
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -49,13 +49,13 @@ export default function SignIn() {
   //     password: data.get('password'),
   //   });
   // };
-  const context = useAuth()
+  //const context = useAuth()
   const navigate = useNavigate()
   const location = useLocation();
   const [username, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-
+  const setUser = useUserStore((state) => state.setUser)
 
   async function loginUser(credentials:Credentials) {
 
@@ -79,8 +79,8 @@ export default function SignIn() {
     });
     if (response.status) {
         const data = JSON.parse(response.message)
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('user',data.username);
+       // localStorage.setItem('accessToken', data.accessToken);
+       // localStorage.setItem('user',data.username);
         
         Swal.fire({
           title: 'Signed in!',
@@ -90,10 +90,12 @@ export default function SignIn() {
         }).then((result) => {
         //  history.replace('/'); 
         data.role = "admin"
-        context.dispatch({ type: "LOGIN", payload: data })
+        setUser({username:data.username,accessToken:data.accessToken,role:data.role,isAuthenticated:true})
+        //context.dispatch({ type: "LOGIN", payload: data })
         //@ts-ignore
         const origin = location.state?.from?.pathname ;
         //console.log(location.state)
+        
         navigate(origin);
         //navigate("/")
       //history.push('/dashboard'); // Redirect to the dashboard after login

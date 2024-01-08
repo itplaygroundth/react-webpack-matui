@@ -5,4 +5,5 @@ declare module '*.jpeg';
 declare module '*.svg';
 declare module 'nprogress';
 declare module 'numeral';
+declare module 'md5';
 

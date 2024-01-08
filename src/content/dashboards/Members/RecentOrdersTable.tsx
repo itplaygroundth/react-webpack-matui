@@ -6,10 +6,16 @@ import {
   Tooltip,
   Divider,
   Box,
+  Button,
   FormControl,
   InputLabel,
   Card,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
   IconButton,
   Table,
   TableBody,
@@ -19,6 +25,7 @@ import {
   TableRow,
   TableContainer,
   Select,
+  Slide,
   MenuItem,
   Typography,
   useTheme,
@@ -31,6 +38,17 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
 import React from 'react';
+import { TransitionProps } from '@mui/material/transitions';
+import MemberDialog from './MemberModal';
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -91,13 +109,27 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ members }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
+  const [editedMembers, setEditedMembers] = useState<Members>();
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+  const [open, setOpen] = React.useState(false);
 
+  const handleClickOpen = (cryptoOrderId:any):void => {
+ 
+        setEditedMembers(members.filter((members:Members) => members.id==cryptoOrderId)[0])
+ 
+    
+      setOpen(true)
+    };
+ 
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const statusOptions = [
     {
       id: 'all',
@@ -174,6 +206,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ members }) => {
   const theme = useTheme();
 
   return (
+    <>
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
@@ -339,6 +372,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ members }) => {
                         }}
                         color="inherit"
                         size="small"
+                        onClick={(event:any) =>
+                         // handleSelectOneCryptoOrder(event, members.id)
+                          handleClickOpen(members.id)
+                        }
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -356,8 +393,11 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ members }) => {
                       </IconButton>
                     </Tooltip>
                   </TableCell>
+                 { open &&  <MemberDialog open={open} members={editedMembers} onClose={handleClose} /> }
                 </TableRow>
+                
               );
+              
             })}
           </TableBody>
         </Table>
@@ -373,7 +413,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ members }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
+      
     </Card>
+ 
+    </>
   );
 };
 
