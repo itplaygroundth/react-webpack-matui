@@ -1,6 +1,7 @@
 export type CryptoOrderStatus = 'completed' | 'pending' | 'failed';
 export type PartnersStatus = 'active' | 'pending' ;
 export type MembersStatus = 'active' | 'pending' ;
+export type PromotionStatus = 0 | 1 | 2;
 export type TransactionsStatus = 'void' | 'verified' | 'pending' ;
 
 export interface User {
@@ -15,6 +16,8 @@ export interface UserInfo {
   accessToken: string;
   isAuthenticated: boolean;
   role:string;
+  avatar:string;
+
 }
 
 export interface CryptoOrder {
@@ -56,6 +59,16 @@ export interface Commission {
   partners_key: string;
   turnover: number;
   status:string;
+}
+
+export interface Promotion {
+   id: string;
+   ProName:string;
+   Formular:string;
+   StartDate: Date;
+   StopDate: Date;
+   Active: number
+   IsCancel: number;
 }
 
 export interface Transactions {

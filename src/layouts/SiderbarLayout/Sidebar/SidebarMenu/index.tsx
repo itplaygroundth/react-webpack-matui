@@ -237,7 +237,7 @@ function SidebarMenu() {
                   component={RouterLink}
                   onClick={closeSidebar}
                   to="/dashboards/members"
-                  startIcon={<TableChartTwoToneIcon />}
+                  startIcon={<AccountCircleTwoToneIcon/>}
                 >
                   MEMBERS
                 </Button>
@@ -261,7 +261,7 @@ function SidebarMenu() {
                   component={RouterLink}
                   onClick={closeSidebar}
                   to="/management/transactions"
-                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                  startIcon={<LocalPharmacyTwoToneIcon />}
                 >
                  BANK TRANSACTIONS
                 </Button>
@@ -271,8 +271,19 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
+                  to="/management/promotion"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  PROMOTION
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
                   to="/management/turnover"
-                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                  startIcon={<BeachAccessTwoToneIcon />}
                 >
                   TURN OVER
                 </Button>

@@ -30,6 +30,7 @@ const Members = Loader(lazy(() => import('@src/content/dashboards/Members')));
 const Transactions = Loader(lazy(() => import('@src/content/management/Transactions')));
 const Turnover = Loader(lazy(() => import('@src/content/management/Turnover')));
 const Commission = Loader(lazy(() => import('@src/content/management/Commission')));
+const Promotion = Loader(lazy(() => import('@src/content/management/Promotion')));
 
 const Status404 = Loader(
     lazy(() => import('@src/content/pages/Status/Status404'))
@@ -146,6 +147,10 @@ const Status404 = Loader(
         {
           path: '',
           element: <Navigate to="admin" replace />
+        },
+        {
+          path: 'promotion',
+          element: <Promotion />
         },
         {
           path: 'transactions',

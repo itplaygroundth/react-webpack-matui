@@ -63,11 +63,13 @@ const UserBoxDescription = styled(Typography)(
 );
 
 function HeaderUserbox() {
-  const user = {
-    name: 'Salamander Urenus',
-    avatar: avatarImage,
-    jobtitle: 'Project Admin'
-  };
+  // const user = {
+  //   name: 'Salamander Urenus',
+  //   avatar: avatarImage,
+  //   jobtitle: 'Project Admin'
+  // };
+
+  const user = useUserStore((state) => state.user)
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -87,19 +89,19 @@ function HeaderUserbox() {
     //context.dispatch({ type: "LOGOUT" })
     //localStorage.removeItem('accessToken');
     //localStorage.removeItem('user');
-    setUser({username:null,accessToken:null,role:null,isAuthenticated:false})
+    setUser({username:null,accessToken:null,role:null,isAuthenticated:false,avatar:avatarImage})
     navigate("/")
   }
 
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={user.username} src={user.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user.username}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -121,11 +123,11 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <Avatar variant="rounded" alt={user.username} src={user.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{user.username}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

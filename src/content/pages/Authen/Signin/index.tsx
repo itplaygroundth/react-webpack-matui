@@ -90,7 +90,7 @@ export default function SignIn() {
         }).then((result) => {
         //  history.replace('/'); 
         data.role = "admin"
-        setUser({username:data.username,accessToken:data.accessToken,role:data.role,isAuthenticated:true})
+        setUser({username:data.username,accessToken:data.accessToken,role:data.role,isAuthenticated:true,avatar:data.avatar})
         //context.dispatch({ type: "LOGIN", payload: data })
         //@ts-ignore
         const origin = location.state?.from?.pathname ;

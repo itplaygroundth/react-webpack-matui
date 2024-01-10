@@ -35,7 +35,7 @@ export const useUserStore = create<UserinfoState>()(
   devtools(
     persist(
       (set) => ({
-        user: { username: null, accessToken: '', role: '',isAuthenticated: false },
+        user: { username: null, accessToken: '', role: '',isAuthenticated: false,avatar:"" },
         setUser: (userinfo:UserInfo) => set((state) => ({ user: userinfo }))
       }),
       { name: 'appUser' },
