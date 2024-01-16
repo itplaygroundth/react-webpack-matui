@@ -1,15 +1,24 @@
 import * as React from 'react';
 import {Button,Checkbox, FormLabel,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle,Slide,FormControl,InputLabel,Input,FormHelperText,Stack, FormGroup, FormControlLabel} from '@mui/material'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import CustomDatePicker from '@src/components/Custom/customDatePicker';
+ 
+import { format } from 'date-fns';
+import ptBrLocale from 'date-fns/locale/pt-BR';
+import enUsLocale from 'date-fns/locale/en-US';
+import { th} from 'date-fns/locale'
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TextField from '@mui/material/TextField';
 import { TransitionProps } from '@mui/material/transitions';
 import { useForm } from 'react-hook-form';
 import { useUserStore } from '@src/store';
-import { UserInfo } from '@src/models/crypto_order';
+import { Promotion, UserInfo } from '@src/models/crypto_order';
 import numeral from 'numeral'
 import { createSignature, requestTime } from '@src/library';
 import Swal from 'sweetalert2';
+import { set } from 'date-fns';
 
  
 const Transition = React.forwardRef(function Transition(
@@ -21,12 +30,25 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function PromotionModal({open,onClose,promotion}:any) {
+type PromotionProps = React.ComponentProps<"div"> & {
+  open: boolean;
+  onClose:any;
+  promotion:Promotion
+};
+
+
+const getCurrentDate = () => {
+  return format(new Date(), 'P', { locale: ptBrLocale })
+}
+
+export default function PromotionModal({open,onClose,promotion}:PromotionProps) {
   //const [open, setOpen] = React.useState(state);
+
+ 
 const initialRef = React.useRef();
 const { register, handleSubmit, setValue , formState: { errors, isSubmitting }} = useForm();
-const [selectedDate, handleDateChange] = React.useState<Date | null>(new Date());
-
+const [startDate, setStartDate] = React.useState(new Date(promotion.StartDate));
+const [stopDate, setSroptDate] = React.useState(new Date(promotion.StopDate));
 
 //const [balance,setBalance]  = React.useState(parseFloat(members.balance));
 //const {token} = promotion
@@ -121,6 +143,14 @@ function onSubmit(values:any) {
   //   setValue('balance', currentBalance)
   //  // setValue('amount',0)
   // };
+
+// React.useEffect(() => {
+
+
+// console.log(format(new Date(), 'P', { locale: ptBrLocale }));
+// console.log(format(new Date(), 'P', { locale: enUsLocale }));
+// })
+
   return (
     
     <Dialog
@@ -140,20 +170,52 @@ function onSubmit(values:any) {
        <FormGroup>
             <FormControl>
             <FormLabel htmlFor="proname">Promotion Name</FormLabel>
-            <Input  ref={initialRef}  {...register('proname')} id="proname" name='proname' aria-describedby="my-helper-text"  />
+            <TextField type='text' ref={initialRef}  {...register('proname')} id="proname" name='proname' aria-describedby="my-helper-text"  />
             </FormControl>
             <FormControl>
-            <FormLabel>Start Date</FormLabel>
-            <TextField ref={initialRef}  type="date" {...register('startdate')} id="startdate" name='startdate' aria-describedby="my-helper-text" />
-            <FormLabel>Stop Date</FormLabel>
-            <TextField ref={initialRef}  type="date" {...register('stopdate')} id="stopdate" name='stopdate' aria-describedby="my-helper-text" />
-
+            <FormLabel htmlFor="startdate"> StartDate</FormLabel>
+            <TextField
+            ref={initialRef} 
+              id="startdate"
+              type="date"
+              defaultValue={ getCurrentDate}
+            
+              onChange={(event) => {
+                // ตรวจสอบว่าคุณได้รับค่าวันที่ในรูปแบบที่ถูกต้องหรือไม่
+                console.log(event.target.value);
+              }}
+              {...register('startdate')}
+            />
+ 
             </FormControl>
-   
-     
             <FormControl>
-            <FormLabel htmlFor="formular"> Formular </FormLabel>
-            <Input  ref={initialRef}  {...register('forlumar')} id="formular" name='formular' aria-describedby="my-helper-text"  />
+            <FormLabel htmlFor="stopdate"> StopDate</FormLabel>
+            <TextField
+            ref={initialRef} 
+              id="stopdate"
+              type="date"
+              defaultValue={getCurrentDate}
+               
+              onChange={(event) => {
+                // ตรวจสอบว่าคุณได้รับค่าวันที่ในรูปแบบที่ถูกต้องหรือไม่
+                console.log(event.target.value);
+              }}
+              {...register('stopdate')}
+            />
+ 
+            </FormControl>
+      
+            <FormControl>
+            <FormLabel htmlFor="deposit"> Deposit</FormLabel>
+            <TextField type='number'  ref={initialRef}  {...register('deposit')} id="deposit" name='deposit' aria-describedby="my-helper-text"  />
+            </FormControl>
+            <FormControl>
+            <FormLabel htmlFor="topup"> Topup X 1</FormLabel>
+            <TextField type='number'  ref={initialRef}  {...register('topup')} id="topup" name='topup' aria-describedby="my-helper-text"  />
+            </FormControl>
+             <FormControl>
+            <FormLabel htmlFor="turnover"> Turnover </FormLabel>
+            <TextField type='number' ref={initialRef}  {...register('turnover')} id="turnover" name='turnover' aria-describedby="my-helper-text"  />
             </FormControl>
             {/* 
             <FormControl>

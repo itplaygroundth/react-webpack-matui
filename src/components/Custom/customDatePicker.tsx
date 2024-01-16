@@ -1,54 +1,98 @@
- 
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Control, FieldValues, Controller } from "react-hook-form";
-import dayjs from "dayjs";
-import React from "react";
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import Stack from '@mui/material/Stack';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+//import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
-interface CustomDatePickerProps<T> {
-  name: Extract<keyof T, string>;
-  control: any;
-  error?: boolean;
-  helperText?: string;
-  defaultValue: any;
-  onDateChange?: any;
+const ProSpan = styled('span')({
+  display: 'inline-block',
+  height: '1em',
+  width: '1em',
+  verticalAlign: 'middle',
+  marginLeft: '0.3em',
+  marginBottom: '0.08em',
+  backgroundSize: 'contain',
+  backgroundRepeat: 'no-repeat',
+  backgroundImage: 'url(https://mui.com/static/x/pro.svg)',
+});
+
+function Label({
+  componentName,
+  valueType,
+  isProOnly,
+}: {
+  componentName: string;
+  valueType: string;
+  isProOnly?: boolean;
+}) {
+  const content = (
+    <span>
+      <strong>{componentName}</strong> for {valueType} editing
+    </span>
+  );
+
+  if (isProOnly) {
+    return (
+      <Stack direction="row" spacing={0.5} component="span">
+        <Tooltip title="Included on Pro package">
+          <a href="https://mui.com/x/introduction/licensing/#pro-plan">
+            <ProSpan />
+          </a>
+        </Tooltip>
+        {content}
+      </Stack>
+    );
+  }
+
+  return content;
 }
 
-const CustomDatePicker = <T,>({
-  name,
-  control,
-  error,
-  helperText,
-  defaultValue,
-  onDateChange,
-  ...rest
-}: CustomDatePickerProps<T>) => {
+export default function CommonlyUsedComponents() {
   return (
- 
-      <div className={"mui-date"}>
-        <Controller
-          name={name}
-          control={control as Control<FieldValues, any>}
-          defaultValue={defaultValue}
-          render={({ field: { onChange, value } }) => (
-            <DatePicker
-              value={value ? dayjs(value) : null}
-              onChange={onChange}
-              slotProps={{
-                actionBar: {
-                  actions: ["today", "accept"],
-                },
-                textField: {
-                  error: error,
-                  helperText: helperText,
-                },
-              }}
-              {...rest}
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer
+        components={[
+          'DatePicker',
+          'TimePicker',
+          'DateTimePicker',
+          'DateRangePicker',
+        ]}
+      >
+        <DemoItem label={<Label componentName="DatePicker" valueType="date" />}>
+          <DatePicker />
+        </DemoItem>
+        <DemoItem label={<Label componentName="TimePicker" valueType="time" />}>
+          <TimePicker />
+        </DemoItem>
+        <DemoItem
+          label={<Label componentName="DateTimePicker" valueType="date time" />}
+        >
+          <DateTimePicker />
+        </DemoItem>
+        {/* <DemoItem
+          label={
+            <Label
+              componentName="DateRangePicker"
+              valueType="date range"
+              isProOnly
             />
-          )}
-        />
-      </div>
- 
+          }
+          component="DateRangePicker"
+        >
+          <DateRangePicker
+            localeText={{
+              start: '',
+              end: '',
+            }}
+          />
+        </DemoItem> */}
+      </DemoContainer>
+    </LocalizationProvider>
   );
-};
-
-export default CustomDatePicker;
+}

@@ -45,7 +45,7 @@ function PageHeader() {
         </Button>
       </Grid>
     </Grid>
-    <PromotionModal open={open} promotioin={promotion} onClose={onClose} />
+    <PromotionModal open={open} promotion={promotion} onClose={onClose} />
     </React.Fragment>
   );
 }
